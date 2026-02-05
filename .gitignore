@@ -1,0 +1,15 @@
+__pycache__
+wandb
+/samples/
+/results/
+
+__pycache__/
+*.pth
+/*.png
+*.out
+
+captions/
+exps/
+# models/
+/models/
+dummy/

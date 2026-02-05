@@ -1,0 +1,139 @@
+stage_1:
+  target: stage1.RAE
+  params:
+    encoder_cls: Dinov2withNorm
+    encoder_config_path: facebook/dinov2-with-registers-base
+    encoder_input_size: 224
+    encoder_params:
+      dinov2_path: facebook/dinov2-with-registers-base
+      normalize: true
+    decoder_config_path: configs/decoder/ViTXL
+    pretrained_decoder_path: models/decoders/dinov2/wReg_base/ViTXL_n08/model.pt
+    noise_tau: 0.0
+    reshape_to_2d: true
+    normalization_stat_path: models/stats/dinov2/wReg_base/imagenet1k/stat.pt
+stage_2:
+  target: stage2.models.NextDiTDH.NextDiTwDDTHead
+  params:
+    patch_size: 1
+    in_channels: 768
+    dim:
+    - 864
+    - 2048
+    n_layers:
+    - 14
+    - 2
+    n_refiner_layers: 2
+    n_heads:
+    - 12
+    - 16
+    n_kv_heads:
+    - 4
+    - 8
+    multiple_of: 256
+    ffn_dim_multiplier: null
+    norm_eps: 1.0e-05
+    qk_norm: true
+    cap_feat_dim: 768
+    enc_axes_dims:
+    - 24
+    - 24
+    - 24
+    enc_axes_lens:
+    - 78
+    - 16
+    - 16
+    dec_axes_dims:
+    - 32
+    - 48
+    - 48
+    dec_axes_lens:
+    - 1
+    - 16
+    - 16
+    wo_shift: false
+    use_pos_embed: false
+    cond_drop_prob: 0.0
+    use_null_text_embed: true
+text_ve:
+  target: stage2.text_encoders.perceiver_v2.PerceiverVE
+  params:
+    in_channels: 768
+    out_channels: 768
+    hidden_size: 768
+    depth: 8
+    num_heads: 12
+    mlp_ratio: 4.0
+    dropout_prob: 0.0
+    num_queries: 256
+    max_input_len: 77
+    pos_emb_type: learned
+    use_qknorm: false
+    use_swiglu: true
+    use_rmsnorm: true
+    use_variational: true
+    init_logvar: 1.0
+    fixed_std: 1.0
+clip:
+  target: stage2.text_encoders.clip.FrozenCLIPEmbedder
+  params:
+    version: openai/clip-vit-large-patch14
+    max_length: 77
+transport:
+  params:
+    path_type: Linear
+    prediction: velocity
+    loss_weight: null
+    time_dist_type: uniform
+sampler:
+  mode: ODE
+  params:
+    sampling_method: euler
+    num_steps: 50
+    atol: 1.0e-06
+    rtol: 0.001
+    reverse: false
+guidance:
+  method: cfg
+  scale: 1.0
+  t_min: 0.0
+  t_max: 1.0
+misc:
+  latent_size:
+  - 768
+  - 16
+  - 16
+  num_classes: 1000
+  time_dist_shift_dim: 196608
+  time_dist_shift_base: 4096
+  diffusion_loss_detach_ut: false
+  use_kld_loss: true
+  kld_loss_type: var_kld
+  kld_loss_weight: 5
+  kld_target_std: 1.0
+  kld_reduction: mean
+  use_align_loss: true
+  align_loss_weight: 1.0
+  align_loss_type: normalized_l2
+training:
+  global_seed: 0
+  epochs: 1400
+  global_batch_size: 32
+  grad_accum_steps: 1
+  ema_decay: 0.9995
+  num_workers: 12
+  log_every: 100
+  ckpt_every: 10000
+  sample_every: 5000
+  base_lr: 0.0002
+  final_lr: 0.0002
+  beta:
+  - 0.9
+  - 0.95
+  wd: 0.0
+  schedule_type: linear
+  decay_start_epoch: 40
+  warmup_epochs: 0
+  decay_end_epoch: 800
+  clip_grad: 1.0
+  persistent_workers: true

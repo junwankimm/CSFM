@@ -1,0 +1,16 @@
+timm==0.9.16
+accelerate==1.12.0
+transformers==4.57.1
+numpy==1.26.0
+torchdiffeq==0.2.5
+torchmetrics
+huggingface_hub
+torch-fidelity
+wandb
+einops
+open_clip_torch
+openai-clip
+scipy
+omegaconf
+pillow 
+tqdm
