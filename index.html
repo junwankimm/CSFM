@@ -183,12 +183,12 @@
                 </div>
                 <h3>Learning a Conditional Source Distribution (B)</h3>
                 <p>
-                We explicitly learn the source distribution in a condition-dependent manner, allowing it to adapt to the conditioning signal and enabling end-to-end optimization of the source–target coupling for conditional generation tasks such as text-to-image synthesis.
+                We explicitly learn the source distribution in a condition-dependent manner, allowing it to adapt to the conditioning signal and enabling end-to-end optimization of the source–target coupling for conditional generation tasks such as text-to-image synthesis. However, implementing the conditional source as a deterministic mapping severely restricts its support and leads to degenerate transport.
                 </p>
 
                 <h3>Conditional Gaussian for Sufficient Support (C) </h3>
                 <p>
-                However, implementing a conditional source as a deterministic mapping severely restricts support and leads to degenerate transport. To ensure sufficient support and smooth interpolation, we parameterize the source as a conditional Gaussian.
+                To ensure sufficient support and smooth interpolation, we parameterize the source as a conditional Gaussian. However, despite this Gaussian parameterization, joint training with the flow model often drives the conditional variance toward zero.
                 </p>
 
                 <h3>Limitations of KL-based Regularization (D) </h3>
@@ -203,7 +203,7 @@
 
                 <h3>Source–Target Directional Alignment</h3>
                 <p>
-                In practical conditional generation tasks such as text-to-image synthesis, the flow model is typically equipped with strong conditional modeling capacity. Consequently, the flow matching objective provides relatively weak learning signals for the source distribution, making it harder to learn an informative source in practice. To address this, we explicitly encourage directional alignment between the learned source and target samples, guiding the source to better reflect the target structure in high-dimensional settings.
+                In practical conditional generation tasks such as text-to-image synthesis, the flow model is typically equipped with strong conditional modeling capacity. Consequently, the flow matching objective provides relatively weak learning signals for the source distribution, making it difficult to learn an informative source in practice. To address this, we explicitly encourage directional alignment between the learned source and target samples, guiding the source to better reflect the target structure in high-dimensional settings and facilitating more stable optimization.
                 </p>
 
                 <p>
@@ -221,7 +221,7 @@
                         <div class="slide">
                             <img src="images/fmloss_gradvar.png"
                                 class="comparison-slideshow-image" alt="Flow matching loss and gradient variance">
-                            <div class="image-caption">CSFM shows a faster decrease in the flow matching loss and consistently lower gradient variance than standard FM, with particularly clear gains at small interpolation times near the source.</div>
+                            <div class="image-caption">CSFM shows a faster decrease in the flow matching loss and consistently lower gradient variance than standard FM, with particularly clear gains at small interpolation times near the source. As a secondary observation, removing the alignment loss results in higher FM loss and increased gradient variance, suggesting that alignment also contributes to improved flow matching optimization.</div>
                         </div>
                         
                         <div class="slide">
@@ -310,7 +310,7 @@
                 <div class="two-col">
                     <div class="col-left">
                         <p>
-                        The effectiveness of learning a condition-dependent source depends strongly on the structure of the target representation. When the target space exhibits well-separated and discriminative structure with respect to the conditioning signal, source learning becomes more effective.
+                            The effectiveness of learning a condition-dependent source depends strongly on the structure of the target representation. When the target space exhibits well-separated and discriminative structure with respect to the conditioning signal, source learning becomes more effective. Consistent with this observation, we observe substantially larger gains in both FID and CLIP Score in the RAE latent space compared to the SD-VAE latent space.
                         </p>
                         
                         <p>
@@ -318,8 +318,27 @@
                         </p>
                     </div>
                     <div class="col-right img">
-                        <div class="image-container">
-                            <img src="images/targetvssource.png" class="image-item img large-image z-depth-1" alt="Learned source distribution comparison">
+                        <p></p>
+                        <div class="slideshow-container">
+                            <div class="slideshow small">
+                                <div class="slide">
+                                    <img src="images/targetvssource.png"
+                                        class="comparison-slideshow-image" alt="Source distribution comparison">
+                                </div>
+                                <div class="slide">
+                                    <img src="images/stepcomparison_full.png"
+                                        class="comparison-slideshow-image" alt="Comparison between SD-VAE and RAE">
+                                </div>
+                            </div>
+        
+                            <button class="slideshow-nav prev" onclick="changeSlide(-1)">❮</button>
+                            <button class="slideshow-nav next" onclick="changeSlide(1)">❯</button>
+                            
+                            <div class="slideshow-controls">
+                                <button class="play-pause" onclick="togglePlayPause()">
+                                    <i class="fa fa-pause"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -417,7 +436,7 @@
             function startAutoplay() {
                 autoplayInterval = setInterval(() => {
                     showSlide(currentSlide + 1);
-                }, 5000);
+                }, 10000);
             }
 
             function resetAutoplay() {

@@ -631,6 +631,15 @@ pre {
     flex-direction: column;
 }
 
+.slideshow.small {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
 .slide {
     position: absolute;
     width: 100%;
