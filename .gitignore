@@ -11,5 +11,5 @@ __pycache__/
 captions/
 exps/
 # models/
-/models/
+/models
 dummy/
