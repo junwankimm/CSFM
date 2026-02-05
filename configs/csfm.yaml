@@ -56,7 +56,7 @@ stage_2:
     cond_drop_prob: 0.0
     use_null_text_embed: true
 text_ve:
-  target: stage2.text_encoders.perceiver_v2.PerceiverVE
+  target: stage2.text_encoders.perceiver.PerceiverVE
   params:
     in_channels: 768
     out_channels: 768
@@ -118,7 +118,7 @@ misc:
 training:
   global_seed: 0
   epochs: 1400
-  global_batch_size: 32
+  global_batch_size: 1024
   grad_accum_steps: 1
   ema_decay: 0.9995
   num_workers: 12

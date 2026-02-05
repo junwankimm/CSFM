@@ -34,7 +34,7 @@ from stage2.transport import create_transport, Sampler
 from utils.train_utils import parse_configs
 
 from stage2 import Wrapper
-from stage2.text_encoders.perceiver_v2 import PerceiverVE
+from stage2.text_encoders.perceiver import PerceiverVE
 from stage2.text_encoders.clip import FrozenCLIPEmbedder
 from utils.data_utils import IN1KTextJsonlSampler
 from torch.utils.data import DataLoader

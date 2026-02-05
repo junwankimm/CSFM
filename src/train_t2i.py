@@ -38,7 +38,7 @@ from utils import wandb_utils
 import wandb
 from utils.optim_utils import build_optimizer, build_scheduler
 from utils.data_utils import IN1KTextJsonlDataset, center_crop_arr
-from stage2.text_encoders.perceiver_v2 import PerceiverVE
+from stage2.text_encoders.perceiver import PerceiverVE
 from stage2.text_encoders.clip import FrozenCLIPEmbedder
 from stage2.text_encoders.contrastive_loss import ClipLoss, SigLipLoss
 from stage2.text_encoders.regularization_loss import *

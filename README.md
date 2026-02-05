@@ -15,6 +15,9 @@ This repository provides the official PyTorch implementation of **Condition-Depe
 
 ---
 
+### 📨 News
+🚀 05/Feb/26 - Released training and evaluation code of CSFM!
+
 ### 🛠 Environment
 
 ```bash
@@ -48,11 +51,13 @@ hf download nyu-visionx/RAE-collections \
   --local-dir models 
 ```
 
-### 🚀 Training  
+**Important**: Make sure the model and stats paths match those defined in the config file.
 
-`src/train_t2i.py` is compatible with both GPU and TPU(torch-xla).
+### 🔥 Training  
 
-enable --use_xla for TPU training. We tested on torch-xla==2.8.1
+`src/train_t2i.py` is compatible with both GPU and TPU(TorchXLA).
+
+enable `--use_xla` for TPU training. We tested on torch-xla==2.8.1
 
 Configs
 - CSFM: `configs/csfm.yaml`     
@@ -125,6 +130,17 @@ torchrun --standalone --nnodes=1 --nproc_per_node=4 src/test_t2i.py \
     --tf32 \
     --global_seed 0 \
 
+```
+
+To follow the ADM evaluation use `--make_npz` to create npz file and follow this setup
+
+```bash
+git clone https://github.com/openai/guided-diffusion.git
+cd guided-diffusion/evaluation
+conda create -n adm-fid python=3.10
+conda activate adm-fid
+pip install 'tensorflow[and-cuda]'==2.19 scipy requests tqdm
+python evaluator.py VIRTUAL_imagenet256_labeled.npz /path/to/samples.npz
 ```
 
 ### Acknowledgement
