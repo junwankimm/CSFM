@@ -1,7 +1,7 @@
 # Better Source, Better Flow: Learning Condition-Dependent Source Distribution for Flow Matching (CSFM)
 
 
-[📄 Paper (coming soon)]() · [🌐 Project Page](https://junwankimm.github.io/CSFM) · [🤗 Dataset](https://huggingface.co/datasets/junwann/CSFM-ImageNet1K-Caption)
+[📄 Paper](https://arxiv.org/abs/2602.05951) · [🌐 Project Page](https://junwankimm.github.io/CSFM) · [🤗 Dataset](https://huggingface.co/datasets/junwann/CSFM-ImageNet1K-Caption)
 
 
 <!-- --- -->
