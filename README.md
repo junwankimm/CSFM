@@ -154,5 +154,14 @@ The toy experiments in the paper are conducted upon following repository:
 
 
 ### BibTeX
-```bash
+```
+@misc{kim2026bettersourcebetterflow,
+    title={Better Source, Better Flow: Learning Condition-Dependent Source Distribution for Flow Matching}, 
+    author={Junwan Kim and Jiho Park and Seonghu Jeon and Seungryong Kim},
+    year={2026},
+    eprint={2602.05951},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV},
+    url={https://arxiv.org/abs/2602.05951}, 
+}
 ```
