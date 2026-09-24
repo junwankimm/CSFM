@@ -78,9 +78,9 @@
             <nav class="main-nav">
                 <ul class="nav-links">
                     <li><a href="#abstract">Overview</a></li>
-                    <li><a href="#CSFM">Methods</a></li>
-                    <li><a href="#advantages-of-csfm">Advantages</a></li>
-                    <li><a href="#component-wise-analysis">Analysis</a></li>
+                    <li><a href="#CSFM">How</a></li>
+                    <li><a href="#advantages-of-csfm">Why</a></li>
+                    <li><a href="#target-representation-matters">When</a></li>
                     <li><a href="#citation">Citation</a></li>
                 </ul>
             </nav>
@@ -93,7 +93,7 @@
                 <div class="title-flex">
                     <div class="title-text-block">
                         <h1 class="title"><span class="gradient-text">Better Source Better Flow</span>: Learning Condition-Dependent<span class="title-break"></span>Source Distribution for Flow Matching</h1>
-                        <h1 class="subtitle">arXiv 2026</h1>
+                        <h1 class="subtitle">NeurIPS 2026</h1>
                     </div>
                 </div>
             </div>
@@ -158,7 +158,7 @@
             <div id="abstract" class="base-row section">
                 <h2>Introducing the Condition-dependent Source Flow Matching (CSFM)</h2>
                 <p class="paragraph">
-                    While flow matching allows arbitrary source distributions, most existing approaches rely on a fixed Gaussian and rarely treat the source distribution itself as an optimization target. <Strong>Condition-dependent Source Flow Matching (CSFM)</Strong> demonstrates that a principled design of the source distribution is not only feasible but also beneficial at the scale of modern text-to-image systems, by learning a condition-dependent source distribution that better exploits rich conditioning information.
+                    While flow matching allows arbitrary source distributions, most existing approaches rely on a fixed Gaussian and rarely treat the source distribution itself as an optimization target. <Strong>Condition-dependent Source Flow Matching (CSFM)</Strong> studies condition-dependent source distributions along three axes: <strong>why</strong> source learning helps, through the intrinsic variance term of the flow-matching objective; <strong>how</strong> to make it work in modern text-to-image systems, where variance-only regularization and directional source&ndash;target alignment are critical for stable training; and <strong>when</strong> it is most beneficial, by connecting source design to the structure of the target representation space.
                 </p>
             </div>
 
@@ -173,8 +173,8 @@
             
 
             <section id="CSFM" class="section">
-                <h2>CSFM</h2>
-                <p>Using simple 2D toy experiments, we begin by studying what happens when the source distribution is learned naively. These experiments reveal clear failure modes highlighting that learning the source distribution is non-trivial and requires careful design.</p>
+                <h2>CSFM: How We Design a Learnable Source</h2>
+                <p>We study condition-dependent source learning along three questions: <strong>why</strong> it helps, <strong>how</strong> to make it stable and effective in modern text-to-image systems, and <strong>when</strong> its benefits are largest. We start with <strong>how</strong>. Using simple 2D toy experiments, we begin by studying what happens when the source distribution is learned naively. These experiments reveal clear failure modes highlighting that learning the source distribution is non-trivial and requires careful design.</p>
                 <div class="image-container">
                     <div class="image-content">
                         <img src="images/toy_2d.png" class="img large-image" alt="Toy experiments">
@@ -211,10 +211,25 @@
                 </p>
             </section>
 
-            <section id="advantages-of-csfm" class="section">
-                <h2>Advantages of CSFM</h2>
+            <section id="component-wise-analysis" class="section">
+                <h2>Validating the Design: How CSFM Works in Practice</h2>
 
-                <p>CSFM improves flow matching by reducing intrinsic variance through a condition-dependent source, leading to faster and more stable training. This results in higher sample quality with fewer training and sampling steps, including more robust few-step generation due to straighter transport paths. CSFM also consistently outperforms prior condition-aware source methods and remains effective when combined with guidance, demonstrating strong practicality in conditional generation settings.</p>
+                <p>We validate that the insights from toy experiments extend to practical text-to-image generation by constructing an ImageNet-based dataset with descriptive captions and evaluating our method on it. We examine key design choices in realistic settings and further test robustness across different conditioning architectures and text encoders. Across these settings, the proposed design remains consistently effective, demonstrating that our analysis generalizes beyond simplified toy scenarios to practical text-to-image models.</p>
+
+
+                <div class="image-container">
+                    <div class="image-content">
+                        <img src="images/components.png" class="img large-image" alt="Component analysis">
+                    </div>
+
+                    <p class="image-caption">We evaluate individual components on a captioned ImageNet dataset. Gray rows indicate fixed-Gaussian baselines; bold entries denote the default setting; <sup>†</sup> indicates a parameter-matched baseline.</p>
+                </div>
+            </section>
+
+            <section id="advantages-of-csfm" class="section">
+                <h2>Why CSFM Improves Flow Matching</h2>
+
+                <p>Having shown how to make source learning stable in practice, we now turn to why it helps. CSFM improves flow matching by reducing intrinsic variance through a condition-dependent source, leading to faster and more stable training. This results in higher sample quality with fewer training and sampling steps, including more robust few-step generation due to straighter transport paths. CSFM also consistently outperforms prior condition-dependent source and coupling methods and remains effective when combined with guidance, demonstrating strong practicality in conditional generation settings.</p>
                 
                 <div class="slideshow-container">
                     <div class="slideshow">
@@ -238,12 +253,12 @@
                         <div class="slide">
                             <img src="images/comparison.png"
                                 class="comparison-slideshow-image" alt="Comparison with source learning methods">
-                            <div class="image-caption">Compared to prior approaches that modify the training source distribution, such as CrossFlow and C<sup>2</sup>OT, CSFM achieves better FID and CLIP Score under the same evaluation setting.</div>
+                            <div class="image-caption">Compared to prior condition-dependent source and coupling methods—CrossFlow, C<sup>2</sup>OT, CPD, and CAR-Flow—which provide limited gains in this high-dimensional text-to-image setting, CSFM achieves the best performance across fidelity and alignment metrics (FID, CLIP Score, IS, FDD, and VQAScore).</div>
                         </div>
                         <div class="slide">
                             <img src="images/guidance.png"
                                 class="comparison-slideshow-image" alt="Guidance comparison">
-                            <div class="image-caption">Because the learned source already encodes conditional information, CSFM does not adopt classifier-free guidance and is instead evaluated with autoguidance. CSFM remains effective with autoguidance, achieving gains comparable to those in the no-guidance setting.</div>
+                            <div class="image-caption">Because the learned source already encodes conditional information, CSFM does not adopt classifier-free guidance (CFG) and is instead evaluated with autoguidance (AG). AG improves both the Gaussian-source baseline and CSFM, with CSFM + AG achieving the best FID while maintaining a strong CLIP Score.</div>
                         </div>
                     </div>
 
@@ -289,24 +304,8 @@
             </section>
 
 
-            <section id="component-wise-analysis" class="section">
-                <h2>Component-wise Analysis of CSFM</h2>
-
-                <p>We validate that the insights from toy experiments extend to practical text-to-image generation by constructing an ImageNet-based dataset with descriptive captions and evaluating our method on it. We examine key design choices in realistic settings and further test robustness across different conditioning architectures and text encoders. Across these settings, the proposed design remains consistently effective, demonstrating that our analysis generalizes beyond simplified toy scenarios to practical text-to-image models.</p>
-
-
-                <div class="image-container">
-                    <div class="image-content">
-                        <img src="images/components.png" class="img large-image" alt="Component analysis">
-                    </div>
-
-                    <p class="image-caption">We evaluate individual components on a captioned ImageNet dataset. Gray rows indicate fixed-Gaussian baselines; bold entries denote the default setting; <sup>†</sup> indicates a parameter-matched baseline.</p>
-                </div>
-            </section>
-
-
             <section id="target-representation-matters" class="section">
-                <h2>Target Representation Matters</h2>
+                <h2>When Source Learning Helps: Target Representation Matters</h2>
                 <div class="two-col">
                     <div class="col-left">
                         <p>
